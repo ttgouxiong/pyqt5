@@ -17,10 +17,13 @@ EchoMode（回显模式）
 
 from PyQt5.QtWidgets import *
 import sys
+import time
 
 class QLineEditEchomode(QWidget):
     def __init__(self):
         super(QLineEditEchomode, self).__init__()
+        self.normalLineEdit = QLineEdit()
+        self.text = '213'
         self.initUI()
 
     def initUI(self):
@@ -28,32 +31,40 @@ class QLineEditEchomode(QWidget):
 
         formLayout = QFormLayout()
 
-        normalLineEdit = QLineEdit()
         NoEchoLineEdit = QLineEdit()
         PasswordLineEdit = QLineEdit()
         PasswordEchoOnEditLineEdit = QLineEdit()
 
-        formLayout.addRow('Normal', normalLineEdit)
+        formLayout.addRow('Normal', self.normalLineEdit)
         formLayout.addRow('NoEcho', NoEchoLineEdit)
         formLayout.addRow('Password', PasswordLineEdit)
         formLayout.addRow('PasswordEchoOnEdit', PasswordEchoOnEditLineEdit)
 
       # placeholdertext
-        normalLineEdit.setPlaceholderText('Normal')
+        self.normalLineEdit.setPlaceholderText('Normal')
         NoEchoLineEdit.setPlaceholderText('NoEchoLineEdit')
         PasswordLineEdit.setPlaceholderText('PasswordLineEdit')
         PasswordEchoOnEditLineEdit.setPlaceholderText('PasswordEchoOnEditLineEdit')
 
 
-        normalLineEdit.setEchoMode(QLineEdit.Normal)
+        self.normalLineEdit.setEchoMode(QLineEdit.Normal)
         NoEchoLineEdit.setEchoMode(QLineEdit.NoEcho)
         PasswordLineEdit.setEchoMode(QLineEdit.Password)
         PasswordEchoOnEditLineEdit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
 
         self.setLayout(formLayout)
+        self.normalLineEdit.editingFinished.connect(self.get_content)
+
+
+    def get_content(self):
+        print(self.normalLineEdit.text())
+        self.text = self.normalLineEdit.text()
+        print(self.text)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main = QLineEditEchomode()
     main.show()
+    print(main.text)
     sys.exit(app.exec_())
